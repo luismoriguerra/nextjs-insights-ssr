@@ -1,26 +1,32 @@
 // import Image from "next/image";
 
 import Link from "next/link";
+import Search from "./components/Search";
+import { getFoundations } from "./cubejs/metrics/foundations/queries";
 
-export default function Home() {
+export default async function Home() {
+  const data = await getFoundations();
   return (
     <main>
       <div className=" text-center font-semibold text-lg">
         Data-Driven Insights For Open Source Projects
       </div>
       <div className="text-center my-5">
-        <input
-          className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-          type="text"
-          placeholder="search project"
-        />
+        <Search />
       </div>
-      <div>
-        <div className="card border rounded-md w-[300px] h-[400px]">
-          <div className="text-center">
-            <Link href="/foundation/cncf">CNCF</Link>
+      <div className="grid grid-cols-2">
+        {data.map((row) => (
+          <div
+            key={row["segments.id"]}
+            className="card border rounded-md w-[300px] h-[400px]"
+          >
+            <div className="text-center">
+              <Link href={`/foundation/${row["segments.slug"]}`}>
+                {row["segments.name"]}
+              </Link>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
     </main>
   );

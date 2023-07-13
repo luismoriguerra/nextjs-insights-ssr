@@ -118,8 +118,8 @@ export async function getFoundationDetails(foundationSlug: string = "hyp") {
   const foundation = foundationResponse as Segment;
 
   return {
-    description: description,
-    projects: projects,
-    name: foundation["segments.name"],
+    description: (description as string) || "",
+    projects: (projects as Segment[]) || [],
+    name: (foundation["segments.name"] as string) || "",
   };
 }
